@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 from opentelemetry import trace
-from opentelemetry.trace import TracerProvider
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
@@ -11,8 +10,9 @@ import os
 # URL of your prediction API
 website = "https://sentana006-f5dchbf0bacygude.francecentral-01.azurewebsites.net/predict"
 
+
 # Initialize tracer only once using Streamlit session state
-if "tracer_initialized" not in st.session_state:
+if not st.session_state.get("tracer_initialized") :
     # Initialize OpenTelemetry tracer provider
     trace.set_tracer_provider(TracerProvider())
     tracer = trace.get_tracer(__name__)
